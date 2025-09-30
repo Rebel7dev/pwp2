@@ -1,9 +1,12 @@
 # Użyj oficjalnego obrazu Python
 FROM python:3.10-slim-bookworm
 
-# Zaktualizuj pakiety systemowe dla bezpieczeństwa
-RUN apt-get update && apt-get upgrade -y && apt-get clean
+# Aktualizuje pakiety systemowe
+RUN apt-get update && \
+    apt-get upgrade -y --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
+# Wyłącza buforowanie wyjścia Pythona, aby logi pojawiały się natychmiast
 ENV PYTHONUNBUFFERED=1
 
 # Ustaw katalog roboczy
@@ -13,12 +16,15 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Skopiuj resztę kodu aplikacji
+# Skopiuj resztę kodu aplikacji, w tym nasz skrypt
 COPY . .
 
-# Ustaw zmienną środowiskową i odsłoń port
-ENV FLASK_APP=main.py
-EXPOSE 5000
+# --- KLUCZOWE ZMIANY SĄ TUTAJ ---
+# Nadaj skryptowi uprawnienia do uruchamiania
+RUN chmod +x entrypoint.sh
 
-# Polecenie do uruchomienia bazy i aplikacji
-CMD ["sh", "-c", "flask db upgrade && flask run --host=0.0.0.0"]
+# Ustaw nasz skrypt jako główny punkt wejścia (ENTRYPOINT) do kontenera
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+# Ustaw domyślną komendę (CMD), która zostanie przekazana do skryptu
+CMD ["flask", "run", "--host=0.0.0.0"]
