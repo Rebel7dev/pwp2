@@ -16,14 +16,13 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Skopiuj resztę kodu aplikacji, w tym nasz skrypt
+# Skopiuj resztę kodu aplikacji, w tym skrypt
 COPY . .
 
-# --- KLUCZOWE ZMIANY SĄ TUTAJ ---
 # Nadaj skryptowi uprawnienia do uruchamiania
 RUN chmod +x entrypoint.sh
 
-# Ustaw nasz skrypt jako główny punkt wejścia (ENTRYPOINT) do kontenera
+# Ustaw skrypt jako główny punkt wejścia (ENTRYPOINT) do kontenera
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Ustaw domyślną komendę (CMD), która zostanie przekazana do skryptu
