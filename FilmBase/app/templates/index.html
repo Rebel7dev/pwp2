@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Witaj, {{ current_user.username }}!</h1>
+
+    <p>Użyj poniższego formularza, aby wyszukać film i dodać go do swojej kolekcji.</p>
+
+    <form action="{{ url_for('search') }}" method="post" style="margin: 30px 0; display: flex; gap: 10px;">
+        <input type="text" name="query" placeholder="Wpisz tytuł filmu..." required style="flex-grow: 1; padding: 12px;">
+        <button type="submit" class="btn">Szukaj</button>
+    </form>
+
+    <hr style="margin: 40px 0;">
+
+    <h2>Do obejrzenia</h2>
+    {% if to_watch_movies %}
+        <div class="movie-grid">
+            {% for movie in to_watch_movies %}
+            <div class="movie-item">
+                <a href="{{ url_for('movie_details', tmdb_id=movie.tmdb_id) }}">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+                </a>
+                <form action="{{ url_for('remove_movie', movie_id=movie.id) }}" method="post">
+                    <button type="submit" class="btn-remove">Usuń</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Twoja lista filmów do obejrzenia jest pusta. Użyj wyszukiwarki, aby coś dodać!</p>
+    {% endif %}
+
+    <hr style="margin: 40px 0;">
+
+    <h2>Obejrzane</h2>
+    {% if watched_movies %}
+        <div class="movie-grid">
+            {% for movie in watched_movies %}
+            <div class="movie-item">
+                <a href="{{ url_for('movie_details', tmdb_id=movie.tmdb_id) }}">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+                </a>
+                <form action="{{ url_for('remove_movie', movie_id=movie.id) }}" method="post">
+                    <button type="submit" class="btn-remove">Usuń</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nie oznaczyłeś jeszcze żadnego filmu jako obejrzany.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="margin: 20px auto; max-width: 400px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <h2>Zarejestruj się</h2>
+        <form action="" method="post">
+            <p>
+                <label for="username">Nazwa użytkownika:</label><br>
+                <input type="text" id="username" name="username" required style="width: 95%; padding: 8px;">
+            </p>
+            <p>
+                <label for="email">Adres email:</label><br>
+                <input type="email" id="email" name="email" required style="width: 95%; padding: 8px;">
+            </p>
+            <p>
+                <label for="password">Hasło:</label><br>
+                <input type="password" id="password" name="password" required style="width: 95%; padding: 8px;">
+            </p>
+            <p><button type="submit" style="padding: 10px 15px;">Zarejestruj</button></p>
+        </form>
+        <p>
+            Masz już konto?
+            <a href="{{ url_for('login') }}">Zaloguj się!</a>
+        </p>
+    </div>
+{% endblock %}

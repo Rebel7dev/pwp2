@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Wyniki wyszukiwania</h1>
+
+    {% if results %}
+        <div class="movie-grid">
+            {% for result in results %}
+                <div class="movie-item">
+                    <a href="{{ url_for('movie_details', tmdb_id=result.id) }}">
+                    {% if result.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w200{{ result.poster_path }}" alt="{{ result.title }}">
+                    {% else %}
+                        <div class="poster-placeholder">
+                            <span>Brak plakatu</span>
+                        </div>
+                    {% endif %}
+                    </a>
+
+                    <div class="movie-details">
+                        <h3 class="movie-title">{{ result.title }}</h3>
+
+                        <form action="{{ url_for('add_movie') }}" method="post" class="add-form">
+                            <input type="hidden" name="tmdb_id" value="{{ result.id }}">
+                            <input type="hidden" name="title" value="{{ result.title }}">
+                            <input type="hidden" name="poster_path" value="{{ result.poster_path }}">
+
+                            <select name="watchlist">
+                                <option value="to_watch">Chcę obejrzeć</option>
+                                <option value="watched">Obejrzane</option>
+                            </select>
+                            <button type="submit" class="btn btn-small">Dodaj</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nie znaleziono filmów pasujących do Twojego zapytania.</p>
+    {% endif %}
+</div>
+{% endblock %}

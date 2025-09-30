@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv
+venv/
+venv.bak
+.virtualenv
+
+# Environment variables
+.env
+
+# Database files
+*.db
+*.sqlite3
+
+# IDE / Editor specific
+.vscode/
+.idea/
+
+# Flask-Migrate
+migrations/

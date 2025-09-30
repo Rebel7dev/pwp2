@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="movie-details-grid">
+        <div class="movie-poster-large">
+            {% if movie.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w400{{ movie.poster_path }}" alt="{{ movie.title }}">
+            {% else %}
+                <div class="poster-placeholder" style="height: 600px;">
+                    <span>Brak plakatu</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="movie-info">
+            <h1>{{ movie.title }} <span class="release-year">({{ movie.release_date[:4] }})</span></h1>
+
+            {% if movie.tagline %}
+                <p class="tagline"><em>"{{ movie.tagline }}"</em></p>
+            {% endif %}
+
+            <h2>Opis</h2>
+            <p>{{ movie.overview }}</p>
+
+            <div class="info-meta">
+                <p><strong>Ocena:</strong> {{ "%.1f"|format(movie.vote_average) }} / 10</p>
+                <p><strong>Gatunki:</strong>
+                    {% for genre in movie.genres %}
+                        {{ genre.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+
+            <h2>Główna obsada</h2>
+            <div class="cast-list">
+                {% for actor in cast %}
+                    <div class="actor">
+                        <p class="actor-name">{{ actor.name }}</p>
+                        <p class="character-name">{{ actor.character }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
